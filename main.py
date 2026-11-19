@@ -39,7 +39,7 @@ def create_todo(data: TodoCreate):
     return functions.create_todo(title=data.title, description=data.description, completed=data.completed)
 
 
-@app.get("/todos", response_model=List[TodoResponse])
+@app.get("/create_todos", response_model=List[TodoResponse])
 def get_todos():
     return functions.get_todos()
 
@@ -56,4 +56,8 @@ def update_todo(todo_id: int, data: TodoUpdate):
         raise HTTPException(status_code=404, detail="Todo not found")
     return todo
 
-
+@app.delete("/delete-todos/{todo_id}")
+def delete_todo(todo_id: int):
+    if not functions.delete_todo(todo_id=todo_id):
+        raise HTTPException(status_code=404, detail="Todo not found")
+    return {"message": "Todo deleted"}
